@@ -86,13 +86,6 @@ app.post('/math', (req, res) => {
     res.json({ data }); 
   }
 
-  if (total.operand !== '+' || '-' || '*' || '/') {
-    return res.status(400).send({
-      sucess: false,
-      message: 'invalid operand'
-    });
-  }
-
 });
 
 
