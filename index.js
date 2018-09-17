@@ -61,8 +61,8 @@ app.post('/math', (req, res) => {
     });
   }
   const total = {
-    value1: parseInt(req.body.value1),
-    value2: parseInt(req.body.value2),
+    value1: parseFloat(req.body.value1),
+    value2: parseFloat(req.body.value2),
     operand: req.body.operand
   }
 
