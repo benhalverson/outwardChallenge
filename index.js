@@ -47,6 +47,54 @@ app.get('/math/divide/:id/:id2', (req, res) => {
   res.json({ data });
 });
 
+app.post('/math', (req, res) => {
+  if (!req.body.value1 || !req.body.value2 ) {
+    return res.status(400).send({
+      sucess: false,
+      message: 'value 1 and 2 are required'
+    });
+  }
+  if (!req.body.operand) {
+    return res.status(400).send({
+      sucess: false,
+      message: 'operand is required'
+    });
+  }
+  const total = {
+    value1: parseInt(req.body.value1),
+    value2: parseInt(req.body.value2),
+    operand: req.body.operand
+  }
+
+  if (total.operand === '+') {
+    const data = [total.value1, total.value2].reduce((a, b) => a + b); 
+    res.json({ data }); 
+  }
+
+  if (total.operand === '-') {
+    const data = [total.value1, total.value2].reduce((a, b) => a - b); 
+    res.json({ data }); 
+  }
+
+  if (total.operand === '*') {
+    const data = [total.value1, total.value2].reduce((a, b) => a * b); 
+    res.json({ data }); 
+  }
+
+  if (total.operand === '/') {
+    const data = [total.value1, total.value2].reduce((a, b) => a / b); 
+    res.json({ data }); 
+  }
+
+  if (total.operand !== '+' || '-' || '*' || '/') {
+    return res.status(400).send({
+      sucess: false,
+      message: 'invalid operand'
+    });
+  }
+
+});
+
 
 app.listen(PORT, (err) => {
   if(err) throw err;
