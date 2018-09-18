@@ -1,34 +1,79 @@
+const supertest = require('supertest');
+const should = require('should');
 
-const express = require('express');
-const request = require('supertest');
-const server = require('../index');
+const server = supertest.agent('http://localhost:3000');
 
-
-describe('root route', () => {
-  test('Allow a user to land at / and count up the number of requests they have made to the website' , (done) => {
-    return request(express)
-      .get('/')
+describe('server tests', () => {
+  it('should add two number', done => {
+    const res = {
+      data: {
+        'value1': 1,
+        'value2': 1,
+        'operand': '+',
+        'totalviews': 1
+      }
+    }
+    server
+      .post('/math')
+      .send(res.data)
       .expect(200)
       .end((err, res) => {
-       if(err) return done(err);
-       res.send('ok');
-       done();
-      })
-    // const response = await request(express).get('/');
-    // expect(response.status).toEqual(200);
-    // expect(response.type).toEqual('application/json');
-    // expect(server.body.data).toEqual('Sending some json');
+        res.status.should.equal(200);
+        res.body.error.should.equal(false);
+        res.body.data.should.equal(2);
+        done();
+      });
+  });
+
+  xit('should subtract two numbers', done => {
+    server
+      .post('/math')
+      .send({ value1: 1, value2: 2, operand: '-' })
+      .expect('Content-type', /json/)
+      .expect(200)
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.body.error.should.equal(false);
+        res.body.data.should.equal(-1);
+        done();
+      });
+  });
+
+  xit('should multiply two numbers', done => {
+    server
+      .post('/math')
+      .send({ value1: 3, value2: 3, operand: '*' })
+      .expect('Content-type', /json/)
+      .expect(200)
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.body.error.should.equal(false);
+        res.body.data.should.equal(9);
+        done();
+      });
+  });
+
+  xit('should divide two numbers', done => {
+    server
+      .post('/math')
+      .send({ value1: 3, value2: 3, operand: '*' })
+      .expect('Content-type', /json/)
+      .expect(200)
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.body.error.should.equal(false);
+        res.body.data.should.equal(1);
+        done();
+      });
+  });
+
+  it('should return a 404', done => {
+    server
+      .get('/random')
+      .expect(404)
+      .end((err, res) => {
+        res.status.should.equal(404);
+        done();
+      });
   });
 });
-
-// describe('/math route should add, subtract and multiply 2 numbers', () => {
-//   test('/math/add/1/1', () => {
-//     expect(server.body.data).toEqual(2);
-//   });
-//   test('/math/2-3', () => {
-//     expect(server.body.data).toEqual(-1);
-//   });
-//   test('/math/3*3', () => {
-//     expect(server.body.data).toEqual(9);
-//   });
-// });

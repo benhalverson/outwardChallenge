@@ -137,8 +137,9 @@ app.get('/game', (req, res) => {
   res.sendFile(path.join(__dirname, './public', 'index.html'));
 })
 
-app.listen(PORT, (err) => {
+module.exports = app.listen(PORT, (err) => {
   if(err) throw err;
   console.log(`listening on port ${PORT}`);
 })
 
+ 
