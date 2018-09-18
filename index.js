@@ -1,11 +1,13 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({'extended': true}));
 app.use(bodyParser.json());
+app.use(express.static('public'))
 let totalVisit = 0;
 app.get('/', (req, res) => {
   totalVisit++;
@@ -128,6 +130,12 @@ app.post('/math', (req, res) => {
 
 });
 
+app.get('/game', (req, res) => {
+  // load html page
+  // initialize Phaser/PIXI/Three.js/Babylon.JS and do something non-trivial 
+
+  res.sendFile(path.join(__dirname, './public', 'index.html'));
+})
 
 app.listen(PORT, (err) => {
   if(err) throw err;
