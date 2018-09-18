@@ -6,17 +6,20 @@ const server = supertest.agent('http://localhost:3000');
 describe('server tests', () => {
   it('should add two number', done => {
     const res = {
-      data: {
-        'value1': 1,
-        'value2': 1,
-        'operand': '+',
-        'totalviews': 1
+      body: {
+        data: {
+          'value1': 1,
+          'value2': 1,
+          'operand': '+',
+          'totalviews': 1
+        }
       }
     }
     server
       .post('/math')
-      .send(res.data)
+      .send(res.body.data)
       .expect(200)
+      .expect('Content-type', /json/)
       .end((err, res) => {
         res.status.should.equal(200);
         res.body.error.should.equal(false);
